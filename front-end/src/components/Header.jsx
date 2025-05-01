@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="shadow-md">
+    <header className="shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
         <div className="flex items-center">
           <img
@@ -65,7 +65,7 @@ const Header = () => {
           <p>Nana ABC</p>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
