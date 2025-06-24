@@ -1,17 +1,34 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
 
-const Login = () => {
+const Login = ({ user, setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(
-      `Enviaram as seguintes informações. Email ${email}. Senha ${password}`,
-    );
+    if (email && password) {
+      try {
+        const { data: userDoc } = await axios.post("/users/login", {
+          email,
+          password,
+        });
+
+        setUser(userDoc);
+        setRedirect(true);
+      } catch (error) {
+        alert(`Deu erro ao logar: ${error.response.data}`);
+      }
+    } else {
+      alert("Você precisa preencher o email e a senha!");
+    }
   };
+
+  if (redirect || user) return <Navigate to="/" />;
+
   return (
     <section className="flex items-center">
       <div className="mx-auto flex w-full max-w-96 flex-col items-center gap-4">
