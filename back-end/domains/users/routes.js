@@ -45,10 +45,17 @@ router.post("/login", async (req, res) => {
 
   try {
     const userDoc = await User.findOne({ email });
-    const passwordCorrect = bcrypt.compareSync(password, userDoc.password);
 
-    passwordCorrect ? res.json(userDoc[0]) : res.json("Senha Inválida");
-    res.json(userDoc[0]);
+    if (userDoc) {
+      const passwordCorrect = bcrypt.compareSync(password, userDoc.password);
+      const { name, _id } = userDoc;
+
+      passwordCorrect
+        ? res.json({ name, email, _id })
+        : res.status(400).json("Senha Inválida");
+    } else {
+      res.status(400).json("Usuário não encontrado!");
+    }
   } catch (error) {
     res.status(500).json(error);
   }
