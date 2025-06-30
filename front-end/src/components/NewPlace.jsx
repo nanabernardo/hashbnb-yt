@@ -5,6 +5,7 @@ const NewPlace = () => {
   const [city, setCity] = useState("");
   const [photos, setPhotos] = useState("");
   const [description, setDescription] = useState("");
+  const [perks, setPerks] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,10 +90,53 @@ const NewPlace = () => {
         </label>
         <textarea
           placeholder="Digite a descrição do seu anúncio"
-          className="rounded-2xl border border-gray-300 px-4 py-2 h-56 resize-none"
+          className="h-56 resize-none rounded-2xl border border-gray-300 px-4 py-2"
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label htmlFor="perks" className="ml-2 text-2xl font-bold">
+          Comodidades
+        </label>
+
+        <label
+          htmlFor="wifi"
+          className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        >
+          <input
+            type="checkbox"
+            id="wifi"
+            value={wifi}
+            onChange={(e) =>
+              setPerks((prevValue) => [...prevValue, e.target.value])
+            }
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z"
+            />
+          </svg>
+          Wifi
+        </label>
+
+        <textarea
+          placeholder="Digite a descrição do seu anúncio"
+          className="h-56 resize-none rounded-2xl border border-gray-300 px-4 py-2"
+          id="perks"
+          value={perks}
+          onChange={(e) => setPerks(e.target.value)}
         />
       </div>
     </form>
