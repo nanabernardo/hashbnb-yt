@@ -7,7 +7,7 @@ const AccPlaces = () => {
   const { action } = useParams();
 
   return (
-    <div>
+    <div className="w-full max-w-7xl">
       {action !== "new" ? (
         <Link
           to="/account/places/new"
