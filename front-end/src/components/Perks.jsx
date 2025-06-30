@@ -2,20 +2,25 @@ import React, { useState } from "react";
 
 const Perks = () => {
   const [perks, setPerks] = useState([]);
+  const handleClick = (target) => {
+    const newPerks = target.checked
+      ? [...perks, target.value]
+      : [...perks].filter((perk) => perk !== target.value);
+
+    setPerks(newPerks);
+  };
 
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
       <label
         htmlFor="wifi"
-        className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
       >
         <input
           type="checkbox"
           id="wifi"
           value={"wifi"}
-          onChange={(e) =>
-            setPerks((prevValue) => [...prevValue, e.target.value])
-          }
+          onChange={(e) => handleClick(e.target)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -36,15 +41,13 @@ const Perks = () => {
 
       <label
         htmlFor="parking"
-        className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
       >
         <input
           type="checkbox"
           id="parking"
           value={"parking"}
-          onChange={(e) =>
-            setPerks((prevValue) => [...prevValue, e.target.value])
-          }
+          onChange={(e) => handleClick(e.target)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -65,15 +68,13 @@ const Perks = () => {
 
       <label
         htmlFor="tv"
-        className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
       >
         <input
           type="checkbox"
           id="tv"
           value={"tv"}
-          onChange={(e) =>
-            setPerks((prevValue) => [...prevValue, e.target.value])
-          }
+          onChange={(e) => handleClick(e.target)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -94,15 +95,13 @@ const Perks = () => {
 
       <label
         htmlFor="radio"
-        className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
       >
         <input
           type="checkbox"
           id="radio"
           value={"radio"}
-          onChange={(e) =>
-            setPerks((prevValue) => [...prevValue, e.target.value])
-          }
+          onChange={(e) => handleClick(e.target)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -123,15 +122,13 @@ const Perks = () => {
 
       <label
         htmlFor="pets"
-        className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
       >
         <input
           type="checkbox"
           id="pets"
           value={"pets"}
-          onChange={(e) =>
-            setPerks((prevValue) => [...prevValue, e.target.value])
-          }
+          onChange={(e) => handleClick(e.target)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -152,15 +149,13 @@ const Perks = () => {
 
       <label
         htmlFor="entrance"
-        className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
+        className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-4 py-3"
       >
         <input
           type="checkbox"
           id="entrance"
           value={"entrance"}
-          onChange={(e) =>
-            setPerks((prevValue) => [...prevValue, e.target.value])
-          }
+          onChange={(e) => handleClick(e.target)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
