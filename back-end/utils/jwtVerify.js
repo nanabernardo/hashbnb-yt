@@ -7,16 +7,16 @@ export const JWTVerify = (req) => {
   const { token } = req.cookies;
 
   if (token) {
-    jwt.verify(token, JWT_SECRET_KEY, {}, (error, userInfo) => {
-      if (error) {
-        console.error(error);
-        throw error;
-      }
-
-      return userInfo;
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, JWT_SECRET_KEY, {}, (error, userInfo) => {
+        if (error) {
+          console.error("Deu algum erro ao verificar com o JWT: ", error);
+          reject(error);
+        }
+        
+        resolve(userInfo);
+      });
     });
-
-    res.status(500).json(error);
   } else {
     return null;
   }
