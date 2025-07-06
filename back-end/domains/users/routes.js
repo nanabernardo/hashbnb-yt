@@ -4,6 +4,7 @@ import { connectDb } from "../../config/db.js";
 import User from "./model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { JWTVerify } from "../../utils/jwtVerify.js";
 
 const router = Router();
 const bcryptSalt = bcrypt.genSaltSync();
@@ -22,19 +23,9 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  const { token } = req.cookies;
+  const userInfo = await JWTVerify(req);
 
-  if (token) {
-    jwt.verify(token, JWT_SECRET_KEY, {}, (error, userInfo) => {
-      if (error) throw error;
-
-      res.json(userInfo);
-    });
-
-    res.status(500).json(error);
-  } else {
-    res.json(null);
-  }
+  res.json(userInfo);
 });
 
 router.post("/", async (req, res) => {
