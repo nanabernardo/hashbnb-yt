@@ -1,7 +1,7 @@
 import { Router } from "express";
-import Place from "./model";
+import Place from "./model.js";
 
-const router = Router;
+const router = Router();
 
 router.post("/", async (req, res) => {
   const {
