@@ -186,8 +186,8 @@ const NewPlace = () => {
               Check-out
             </label>
             <input
-              type="number"
-              placeholder="500"
+              type="text"
+              placeholder="12:00"
               className="rounded-full border border-gray-300 px-4 py-2"
               id="checkout"
               value={checkout}
