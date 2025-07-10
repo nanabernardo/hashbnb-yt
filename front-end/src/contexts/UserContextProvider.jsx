@@ -7,9 +7,15 @@ export const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const axiosGet = async () => {
-      const { data } = await axios.get("/users/profile");
-
-      setUser(data);
+      try {
+        const { data } = await axios.get("/users/profile", {
+          withCredentials: true,
+        });
+        setUser(data);
+      } catch (error) {
+        console.error("Erro ao buscar perfil do usuário: ", error);
+        setUser(null);
+      }
     };
 
     axiosGet();
