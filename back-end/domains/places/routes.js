@@ -3,6 +3,7 @@ import Place from "./model.js";
 import { JWTVerify } from "../../utils/jwt.js";
 import { connectDb } from "../../config/db.js";
 import { downloadImage } from "../../utils/imageDownloader.js";
+import { __dirname } from "../../index.js";
 
 const router = Router();
 
@@ -49,7 +50,7 @@ router.post("/", async (req, res) => {
 router.post("/upload/link", async (req, res) => {
   const { link } = req.body;
 
-  await downloadImage(link);
+  await downloadImage(link, `${__dirname}/tmp/`);
 });
 
 export default router;

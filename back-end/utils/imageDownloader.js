@@ -7,7 +7,7 @@ export const downloadImage = async (link, destination) => {
 
   options = {
     url: link,
-    dest: `${destination}/${filename}`,
+    dest: `${destination}${filename}`,
   };
 
   try {
