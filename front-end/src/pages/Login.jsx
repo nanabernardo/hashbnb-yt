@@ -14,15 +14,22 @@ const Login = () => {
 
     if (email && password) {
       try {
-        const { data: userDoc } = await axios.post("/users/login", {
-          email,
-          password,
-        });
+        const { data: userDoc } = await axios.post(
+          "/users/login",
+          {
+            email,
+            password,
+          },
+          { withCredentials: true },
+        );
 
         setUser(userDoc);
         setRedirect(true);
       } catch (error) {
-        alert(`Deu erro ao logar: ${error.response.data}`);
+        const errorMessage =
+          error?.response?.data || "Erro ao tentar logar. Tente novamente.";
+        console.error("Erro ao logar: ", error);
+        alert(errorMessage);
       }
     } else {
       alert("Você precisa preencher o email e a senha!");
