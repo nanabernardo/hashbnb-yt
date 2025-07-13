@@ -50,13 +50,12 @@ router.post("/", async (req, res) => {
 router.post("/upload/link", async (req, res) => {
   const { link } = req.body;
 
-
   try {
-    await downloadImage(link, `${__dirname}/tmp/`);
-    
-    res.json("Imagem enviada!");
+    const filename = await downloadImage(link, `${__dirname}/tmp/`);
+
+    res.json(filename);
   } catch (error) {
-     console.error(error);
+    console.error(error);
     res.status(500).json("Deu ao baixar a imagem.");
   }
 });
