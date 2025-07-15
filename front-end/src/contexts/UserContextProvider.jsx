@@ -4,6 +4,7 @@ import { UserContext } from "./UserContext";
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const axiosGet = async () => {
@@ -12,6 +13,7 @@ export const UserContextProvider = ({ children }) => {
           withCredentials: true,
         });
         setUser(data);
+        setReady(true);
       } catch (error) {
         console.error("Erro ao buscar perfil do usuário: ", error);
         setUser(null);
@@ -21,7 +23,7 @@ export const UserContextProvider = ({ children }) => {
     axiosGet();
   }, []);
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, ready }}>
       {children}
     </UserContext.Provider>
   );
