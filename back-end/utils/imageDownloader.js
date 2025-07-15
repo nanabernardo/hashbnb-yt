@@ -18,7 +18,7 @@ export const downloadImage = async (link, destination) => {
     };
     await download.image(options);
 
-    return fullPath;
+    return filename;
 
     //console.log("Saved to", filename);
   } catch (error) {
