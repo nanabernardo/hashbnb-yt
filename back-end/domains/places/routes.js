@@ -4,6 +4,7 @@ import { JWTVerify } from "../../utils/jwt.js";
 import { connectDb } from "../../config/db.js";
 import { downloadImage } from "../../utils/imageDownloader.js";
 import { __dirname } from "../../server.js";
+import { sendToS3 } from "./controller.js";
 
 const router = Router();
 
@@ -49,11 +50,14 @@ router.post("/", async (req, res) => {
 
 router.post("/upload/link", async (req, res) => {
   const { link } = req.body;
+  const path = `${__dirname}/tmp/`;
 
   try {
-    const filename = await downloadImage(link, `${__dirname}/tmp/`);
+    const { filename, fullPath, mimeType } = await downloadImage(link, path);
 
-    res.json(filename);
+    const fileURL = await sendToS3(filename, fullPath, mimeType);
+
+    res.json(fileURL);
   } catch (error) {
     console.error(error);
     res.status(500).json("Deu ao baixar a imagem.");
