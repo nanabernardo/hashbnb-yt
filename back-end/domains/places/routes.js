@@ -2,9 +2,8 @@ import { Router } from "express";
 import Place from "./model.js";
 import { JWTVerify } from "../../utils/jwt.js";
 import { connectDb } from "../../config/db.js";
-import { downloadImage } from "../../utils/imageDownloader.js";
 import { __dirname } from "../../server.js";
-import { sendToS3 } from "./controller.js";
+import { sendToS3, downloadImage } from "./controller.js";
 
 const router = Router();
 
@@ -64,8 +63,6 @@ router.post("/upload/link", async (req, res) => {
   }
 });
 
-router.post('/upload', async (req,res) => {
-  
-})
+router.post("/upload", async (req, res) => {});
 
 export default router;

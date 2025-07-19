@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import fs from "fs";
+import download from "image-downloader";
+import mime from "mime-types";
 
 const { S3_ACCESS_KEY, S3_SECRET_KEY, BUCKET } = process.env;
 
@@ -25,6 +27,32 @@ export const sendToS3 = async (filename, path, mimetype) => {
 
     return `https://${BUCKET}.s3.us-east-1.amazonaws.com/${filename}`;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const downloadImage = async (link, destination) => {
+  const mimeType = mime.lookup(link);
+  const contentType = mime.contentType(mimeType);
+  const extension = mime.extension(contentType);
+
+  const filename = `${Date.now()}.${extension}`;
+  const fullPath = `${destination}${filename}`;
+
+  console.log(link, extension);
+
+  try {
+    const options = {
+      url: link,
+      dest: fullPath,
+    };
+    await download.image(options);
+
+    return { filename, fullPath, mimeType };
+
+    //console.log("Saved to", filename);
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };
