@@ -3,18 +3,18 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import fs from "fs";
 import download from "image-downloader";
 import mime from "mime-types";
+import multer from "multer";
 
 const { S3_ACCESS_KEY, S3_SECRET_KEY, BUCKET } = process.env;
 
-const client = new S3Client({
-  region: "us-east-1",
-  credentials: {
-    accessKeyId: S3_ACCESS_KEY,
-    secretAccessKey: S3_SECRET_KEY,
-  },
-});
-
 export const sendToS3 = async (filename, path, mimetype) => {
+  const client = new S3Client({
+    region: "us-east-1",
+    credentials: {
+      accessKeyId: S3_ACCESS_KEY,
+      secretAccessKey: S3_SECRET_KEY,
+    },
+  });
   const command = new PutObjectCommand({
     Bucket: BUCKET,
     Key: filename,
@@ -56,3 +56,5 @@ export const downloadImage = async (link, destination) => {
     throw error;
   }
 };
+
+export const uploadImage = () => multer({ dest: "uploads/" });
