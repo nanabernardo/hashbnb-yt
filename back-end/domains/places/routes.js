@@ -60,8 +60,12 @@ router.post("/upload/link", async (req, res) => {
     res.json(fileURL);
   } catch (error) {
     console.error(error);
-    res.status(500).json("Deu ao baixar a imagem.");
+    res.status(500).json("Deu erro ao baixar a imagem.");
   }
 });
+
+router.post('/upload', async (req,res) => {
+  
+})
 
 export default router;
