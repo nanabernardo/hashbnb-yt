@@ -49,10 +49,9 @@ router.post("/", async (req, res) => {
 
 router.post("/upload/link", async (req, res) => {
   const { link } = req.body;
-  const path = `${__dirname}/tmp/`;
 
   try {
-    const { filename, fullPath, mimeType } = await downloadImage(link, path);
+    const { filename, fullPath, mimeType } = await downloadImage(link);
 
     const fileURL = await sendToS3(filename, fullPath, mimeType);
 
@@ -64,7 +63,11 @@ router.post("/upload/link", async (req, res) => {
 });
 
 router.post("/upload", uploadImage().array("files", 10), async (req, res) => {
-  req.files.forEach((file) => console.log(files));
+  req.files.forEach((file) => console.log(file));
+
+  res.json("Deu certo!");
 });
+
+
 
 export default router;

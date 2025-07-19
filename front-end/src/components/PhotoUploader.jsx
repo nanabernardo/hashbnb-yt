@@ -25,9 +25,11 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
 
     filesArray.forEach((file) => formData.append("files", file));
 
-    const { data } = await axios.post("/upload", formData, {
+    const { data } = await axios.post("/places/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
+    console.log(data);
 
     // console.log(filesArray);
     // console.log(formData);
