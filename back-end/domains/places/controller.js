@@ -72,8 +72,9 @@ export const uploadImage = () => {
     },
     filename: function (req, file, cb) {
       const extension = getExtension(file.originalname);
+      const uniqueSulfix = Math.round(Math.random() * 1e9);
 
-      cb(null, `${Date.now()}.${extension}`);
+      cb(null, `${Date.now()}-${uniqueSulfix}.${extension}`);
     },
   });
   return multer({ storage });

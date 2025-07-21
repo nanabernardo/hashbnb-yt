@@ -63,11 +63,48 @@ router.post("/upload/link", async (req, res) => {
 });
 
 router.post("/upload", uploadImage().array("files", 10), async (req, res) => {
-  req.files.forEach((file) => console.log(file));
+  const { files } = req;
 
-  res.json("Deu certo!");
+  const filesPromise = new Promise((resolve, reject) => {
+    const fileURLArray = [];
+
+    files.forEach(async (file, index) => {
+      const { filename, path, mimetype } = file;
+
+      try {
+        const fileURL = await sendToS3(filename, path, mimetype);
+
+        fileURLArray.push(fileURL);
+      } catch (error) {
+        console.error("Deu algo errado ao subir para o S3", error);
+        reject(error);
+      }
+    });
+    const idInterval = setInterval(() => {
+      console.log("executou o intervalo!");
+
+      if (files.length === fileURLArray.length) {
+        clearInterval(idInterval);
+        console.log("Limpou o intervalo!");
+        resolve(fileURLArray);
+      }
+    }, 100);
+  });
+
+  const fileURLArrayResolved = await filesPromise;
+
+  res.json(fileURLArrayResolved);
 });
 
-
+// {
+//   fieldname: 'files',
+//   originalname: '1752775547490.jpg',
+//   encoding: '7bit',
+//   mimetype: 'image/jpeg',
+//   destination: 'C:\\Users\\nanab\\Projetos\\HASHBNB-YOUTUBE\\back-end/tmp/',
+//   filename: '1752958182919.jpg',
+//   path: 'C:\\Users\\nanab\\Projetos\\HASHBNB-YOUTUBE\\back-end\\tmp\\1752958182919.jpg',
+//   size: 2038552
+// }
 
 export default router;

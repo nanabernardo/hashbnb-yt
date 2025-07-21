@@ -6,14 +6,16 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
     e.preventDefault();
 
     if (photoLink) {
-      const { data: filename } = await axios.post("/places/upload/link", {
-        link: photoLink,
-      });
-
-      setPhotos((prevValue) => [...prevValue, filename]);
-      console.log("imagem enviada com sucesso!");
+      try {
+        const { data: filename } = await axios.post("/places/upload/link", {
+          link: photoLink,
+        });
+        setPhotos((prevValue) => [...prevValue, filename]);
+      } catch (error) {
+        alert("deu erro na hora do upload por link", JSON.stringify(error));
+      }
     } else {
-      ("Não existe nenhum link a ser enviado.");
+      alert("Não existe nenhum link a ser enviado.");
     }
   };
 
@@ -25,11 +27,16 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
 
     filesArray.forEach((file) => formData.append("files", file));
 
-    const { data } = await axios.post("/places/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    try {
+      const { data: urlArray } = await axios.post("/places/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    console.log(data);
+      console.log(urlArray);
+      setPhotos((prevValue) => [...prevValue, ...urlArray]);
+    } catch (error) {
+      alert("Deu erro na hora do upload", JSON.stringify(error));
+    }
 
     // console.log(filesArray);
     // console.log(formData);
