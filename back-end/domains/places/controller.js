@@ -13,7 +13,7 @@ const getExtension = (path) => {
   const contentType = mime.contentType(mimeType);
   const extension = mime.extension(contentType);
 
-  return extension;
+  return { extension, mimeType };
 };
 
 export const sendToS3 = async (filename, path, mimetype) => {
@@ -41,7 +41,7 @@ export const sendToS3 = async (filename, path, mimetype) => {
 };
 
 export const downloadImage = async (link) => {
-  const extension = getExtension(link);
+  const { extension, mimeType } = getExtension(link);
   const destination = `${__dirname}/tmp/`;
 
   const filename = `${Date.now()}.${extension}`;
@@ -71,7 +71,7 @@ export const uploadImage = () => {
       cb(null, `${__dirname}/tmp/`);
     },
     filename: function (req, file, cb) {
-      const extension = getExtension(file.originalname);
+      const { extension } = getExtension(file.originalname);
       const uniqueSulfix = Math.round(Math.random() * 1e9);
 
       cb(null, `${Date.now()}-${uniqueSulfix}.${extension}`);
