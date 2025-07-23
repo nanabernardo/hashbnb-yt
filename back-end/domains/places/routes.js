@@ -7,6 +7,35 @@ import { sendToS3, downloadImage, uploadImage } from "./controller.js";
 
 const router = Router();
 
+router.get("/", async (req, res) => {
+  try {
+    const placeDocs = await Place.find();
+
+    res.json(placeDocs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Deu erro ao encontrar as Acomodações.");
+  }
+});
+
+router.get("/owner", async (req, res) => {
+  try {
+    const { _id } = await JWTVerify(req);
+
+    try {
+      const placeDocs = await Place.find({ owner: _id });
+
+      res.json(placeDocs);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json("Deu erro ao encontrar as Acomodações.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Deu erro ao verificar o usuário.");
+  }
+});
+
 router.post("/", async (req, res) => {
   connectDb();
 
@@ -95,16 +124,5 @@ router.post("/upload", uploadImage().array("files", 10), async (req, res) => {
 
   res.json(fileURLArrayResolved);
 });
-
-// {
-//   fieldname: 'files',
-//   originalname: '1752775547490.jpg',
-//   encoding: '7bit',
-//   mimetype: 'image/jpeg',
-//   destination: 'C:\\Users\\nanab\\Projetos\\HASHBNB-YOUTUBE\\back-end/tmp/',
-//   filename: '1752958182919.jpg',
-//   path: 'C:\\Users\\nanab\\Projetos\\HASHBNB-YOUTUBE\\back-end\\tmp\\1752958182919.jpg',
-//   size: 2038552
-// }
 
 export default router;
