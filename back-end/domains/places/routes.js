@@ -8,6 +8,8 @@ import { sendToS3, downloadImage, uploadImage } from "./controller.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
+  connectDb();
+
   try {
     const placeDocs = await Place.find();
 
@@ -19,11 +21,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/owner", async (req, res) => {
+  connectDb();
+
   try {
-    const { _id } = await JWTVerify(req);
+    const userInfo = await JWTVerify(req);
 
     try {
-      const placeDocs = await Place.find({ owner: _id });
+      const placeDocs = await Place.find({ owner: userInfo._id });
 
       res.json(placeDocs);
     } catch (error) {
