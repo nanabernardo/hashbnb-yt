@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import NewPlace from "./NewPlace";
@@ -6,11 +6,12 @@ import axios from "axios";
 
 const AccPlaces = () => {
   const { action } = useParams();
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     const axiosGet = async () => {
       const { data } = await axios.get("/places/owner");
-      console.log(data);
+      setPlaces(data);
     };
 
     axiosGet;
@@ -41,6 +42,16 @@ const AccPlaces = () => {
             Adicionar novo lugar
           </Link>
 
+          {places.map((place) => (
+            <div>
+              <img src={place.photos[0]} alt="Foto da acomodação" />
+
+              <div>
+                <p></p>
+                <p></p>
+              </div>
+            </div>
+          ))}
           <></>
         </>
       ) : (
