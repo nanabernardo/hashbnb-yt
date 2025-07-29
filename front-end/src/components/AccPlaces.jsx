@@ -14,13 +14,13 @@ const AccPlaces = () => {
       setPlaces(data);
     };
 
-    axiosGet;
-  });
+    axiosGet();
+  }, [action]);
 
   return (
     <div className="flex w-full max-w-7xl flex-col items-center">
       {action !== "new" ? (
-        <>
+        <div className="flex flex-col items-center gap-8">
           <Link
             to="/account/places/new"
             className="hover:bg-primary-500 bg-primary-400 flex min-w-44 cursor-pointer gap-2 rounded-full px-4 py-2 text-white transition"
@@ -43,17 +43,25 @@ const AccPlaces = () => {
           </Link>
 
           {places.map((place) => (
-            <div>
-              <img src={place.photos[0]} alt="Foto da acomodação" />
+            <Link
+              key={place._id}
+              to={`/account/places/new/${place._id}`}
+              className="flex items-center gap-6 rounded-2xl bg-gray-100 p-6"
+            >
+              <img
+                className="aspect-square max-w-56 rounded-2xl object-center"
+                src={place.photos[0]}
+                alt="Foto da acomodação"
+              />
 
-              <div>
-                <p></p>
-                <p></p>
+              <div className="flex flex-col gap-2">
+                <p className="text-2xl font-medium">{place.title}</p>
+                <p>{place.description}</p>
               </div>
-            </div>
+            </Link>
           ))}
           <></>
-        </>
+        </div>
       ) : (
         <NewPlace />
       )}
