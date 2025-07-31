@@ -47,7 +47,11 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
 
     setPhotos(newPhotos);
   };
-  const promotePhoto = (fileURL) => {};
+  const promotePhoto = (fileURL) => {
+    const newPhotos = [fileURL, ...photos.filter((photo) => photo !== fileURL)];
+
+    setPhotos(newPhotos);
+  };
 
   return (
     <div className="flex flex-col gap-1">
@@ -84,7 +88,7 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
 
             <div className="absolute right-2 bottom-2 flex gap-1">
               <div
-                onDoubleClick={() => promotePhoto(photo)}
+                onClick={() => promotePhoto(photo)}
                 className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 transition hover:text-white"
               >
                 <svg
