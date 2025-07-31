@@ -42,6 +42,13 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
     // console.log(formData);
   };
 
+  const deletePhoto = (fileURL) => {
+    const newPhotos = photos.filter((photo) => photo !== fileURL);
+
+    setPhotos(newPhotos);
+  };
+  const promotePhoto = (fileURL) => {};
+
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor="photos" className="ml-2 text-2xl font-bold">
@@ -76,7 +83,10 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
             />
 
             <div className="absolute right-2 bottom-2 flex gap-1">
-              <div className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 transition hover:text-white">
+              <div
+                onDoubleClick={() => promotePhoto(photo)}
+                className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 transition hover:text-white"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -93,7 +103,10 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
                 </svg>
               </div>
 
-              <div className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 transition hover:text-white">
+              <div
+                onClick={() => deletePhoto(photo)}
+                className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 transition hover:text-white"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
