@@ -55,6 +55,48 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  connectDb();
+
+  const { id: _id } = req.params;
+
+  const {
+    title,
+    city,
+    photos,
+    description,
+    extras,
+    perks,
+    price,
+    checkin,
+    checkout,
+    guests,
+  } = req.body;
+
+  try {
+    const updatedPlaceDoc = await Place.findOneAndUpdate(
+      { _id },
+      {
+        title,
+        city,
+        photos,
+        description,
+        extras,
+        perks,
+        price,
+        checkin,
+        checkout,
+        guests,
+      }
+    );
+
+    res.json(updatedPlaceDoc);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Deu erro ao atualizar a acomodação.");
+  }
+});
+
 router.post("/", async (req, res) => {
   connectDb();
 
@@ -91,7 +133,7 @@ router.post("/", async (req, res) => {
     res.json(newPlaceDoc);
   } catch (error) {
     console.error(error);
-    res.status(500).json("Deu erro ao criaro novo lugar.");
+    res.status(500).json("Deu erro ao criar o novo lugar.");
   }
 });
 
