@@ -50,6 +50,19 @@ const Place = () => {
 
             <p>{place.city}</p>
           </div>
+
+          <div className="grid aspect-[3/2] grid-cols-[2fr_1fr] grid-rows-2 gap-4 overflow-hidden rounded-2xl">
+            {place.photos
+              .filter((photo, index) => index < 3)
+              .map((photo, index) => (
+                <img
+                  key={photo}
+                  className={`${index === 0 ? "row-span-2" : ""} aspect-square h-full w-full cursor-pointer object-cover transition hover:opacity-75`}
+                  src={photo}
+                  alt="Imagem da Acomodação"
+                />
+              ))}
+          </div>
         </div>
       </div>
     </section>
