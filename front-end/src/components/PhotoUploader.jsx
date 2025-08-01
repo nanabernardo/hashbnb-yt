@@ -78,10 +78,9 @@ const PhotoUploader = ({ photoLink, setPhotoLink, setPhotos, photos }) => {
 
       <div className="mt-2 grid grid-cols-5 gap-4">
         {photos.map((photo) => (
-          <div className="relative">
+          <div className="relative" key={photo}>
             <img
               className="aspect-square rounded-2xl object-cover"
-              key={photo}
               src={`${photo}`}
               alt="Imagens do lugar"
             />
