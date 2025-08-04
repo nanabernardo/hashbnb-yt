@@ -59,6 +59,7 @@ const Place = () => {
             <p>{place.city}</p>
           </div>
         </div>
+
         {/* grade de imagens */}
         <div className="relative grid aspect-[3/2] grid-cols-[2fr_1fr] grid-rows-2 gap-4 overflow-hidden rounded-2xl">
           {place.photos
@@ -96,13 +97,33 @@ const Place = () => {
           </div>
         </div>
 
+        {/* colunas */}
+        <div className="grid grid-cols-2">
+          <div className="flex flex-col gap-5 p-4">
+            <div className="flex flex-col gap-2">
+              <p className="text-2xl font-bold">Descrição</p>
+              <p>{place.description}</p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <p className="text-2xl font-bold">Horários e restrições</p>
+              <div>
+                <p>Checkin: {place.checkin}</p>
+                <p>Checkout: {place.checkout}</p>
+                <p>Número máximo de convidados: {place.guests}</p>
+              </div>
+            </div>
+          </div>
+          <div className="justify-self-center">Reserva</div>
+        </div>
+
         {/* overlay */}
         <div
           className={`${overlay ? "flex" : "hidden"} fixed inset-0 items-start overflow-y-auto bg-black text-white`}
         >
           <div className="mx-auto flex max-w-7xl flex-col gap-8 p-8">
             <div className="grid aspect-[3/2] grid-cols-2 gap-4">
-              {place.photos.map((photo, index) => (
+              {place.photos.map((photo) => (
                 <img
                   key={photo}
                   className={`aspect-square h-full w-full object-cover`}
