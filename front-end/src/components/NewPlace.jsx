@@ -42,7 +42,7 @@ const NewPlace = () => {
 
       axiosGet();
     }
-  }, []);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
