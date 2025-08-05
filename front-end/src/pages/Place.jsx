@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useUserContext } from "../contexts/UserContext";
 
 const Place = () => {
   const { id } = useParams();
+  const { user } = useUserContext();
   const [place, setPlace] = useState(null);
   const [overlay, setOverlay] = useState(false);
   const [checkin, setCheckin] = useState("");
@@ -27,7 +29,13 @@ const Place = () => {
     overlay
       ? document.body.classList.add("overflow-hidden")
       : document.body.classList.remove("overflow-hidden");
-  });
+  }, [overlay]);
+
+  const handleBooking = (e) => {
+    e.preventDefault();
+
+    console.log("Fez uma reserva");
+  };
 
   if (!place) return <></>;
 
@@ -154,6 +162,22 @@ const Place = () => {
                 onChange={(e) => setGuests(e.target.value)}
               />
             </div>
+
+            {user ? (
+              <button
+                className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-white"
+                onClick={handleBooking}
+              >
+                Reservar
+              </button>
+            ) : (
+              <Link
+                to={"/login"}
+                className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-white"
+              >
+                Faça seu login
+              </Link>
+            )}
           </form>
         </div>
 
