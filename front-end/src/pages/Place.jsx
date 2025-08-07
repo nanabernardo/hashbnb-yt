@@ -128,6 +128,15 @@ const Place = () => {
                 <p>Número máximo de convidados: {place.guests}</p>
               </div>
             </div>
+
+            <div className="flex flex-col gap-2">
+              <p className="text-2xl font-bold">Diferenciais</p>
+              <div>
+                {place.perks.map((perk) => (
+                  <p key={perk}>{perk}</p>
+                ))}
+              </div>
+            </div>
           </div>
 
           <form className="flex flex-col gap-4 self-center justify-self-center rounded-2xl border border-gray-200 px-8 py-4">
