@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
+import Perk from "../components/Perk";
 
 const Place = () => {
   const { id } = useParams();
@@ -131,9 +132,11 @@ const Place = () => {
 
             <div className="flex flex-col gap-2">
               <p className="text-2xl font-bold">Diferenciais</p>
-              <div>
+              <div className="flex flex-col gap-1">
                 {place.perks.map((perk) => (
-                  <p key={perk}>{perk}</p>
+                  <div className="flex items-center gap-2">
+                    <Perk perk={perk}></Perk>
+                  </div>
                 ))}
               </div>
             </div>
