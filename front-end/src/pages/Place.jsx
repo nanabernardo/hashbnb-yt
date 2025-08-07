@@ -34,7 +34,11 @@ const Place = () => {
   const handleBooking = (e) => {
     e.preventDefault();
 
-    console.log("Fez uma reserva");
+    if (checkin && checkout && guests) {
+      console.log("Fez uma reserva");
+    } else {
+      alert("Preencha todas as informações antes de fazer a reserva");
+    }
   };
 
   if (!place) return <></>;
@@ -165,7 +169,7 @@ const Place = () => {
 
             {user ? (
               <button
-                className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-white"
+                className="w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-black"
                 onClick={handleBooking}
               >
                 Reservar
