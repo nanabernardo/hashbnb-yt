@@ -13,6 +13,18 @@ const Place = () => {
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState("");
 
+  const numberOfDays = (date1, date2) => {
+    const date1GMT = date1 + "GMT-03:00";
+    const date2GMT = date2 + "GMT-03:00";
+
+    const dateCheckin = new Date(date1GMT);
+    const dateCheckout = new Date(date2GMT);
+
+    return (
+      (dateCheckout.getTime() - dateCheckin.getTime()) / (1000 * 60 * 60 * 24)
+    );
+  };
+
   useEffect(() => {
     if (id) {
       const axiosGet = async () => {
@@ -32,11 +44,24 @@ const Place = () => {
       : document.body.classList.remove("overflow-hidden");
   }, [overlay]);
 
-  const handleBooking = (e) => {
+  const handleBooking = async (e) => {
     e.preventDefault();
 
     if (checkin && checkout && guests) {
-      console.log("Fez uma reserva");
+      const nights = numberOfDays(checkin, checkout);
+
+      const objBooking = {
+        place: id,
+        user: user._id,
+        price: place.price,
+        total: place.price * nights,
+        checkin,
+        checkout,
+        guests,
+        nights,
+      };
+      const { data } = await axios.post("/bookings", objBooking);
+      console.log(data);
     } else {
       alert("Preencha todas as informações antes de fazer a reserva");
     }
