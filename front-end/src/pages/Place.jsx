@@ -12,6 +12,7 @@ const Place = () => {
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState("");
+  const [booking, setBooking] = useState([]);
 
   const numberOfDays = (date1, date2) => {
     const date1GMT = date1 + "GMT-03:00";
@@ -26,11 +27,27 @@ const Place = () => {
   };
 
   useEffect(() => {
+    if (place) {
+      const axiosGet = async () => {
+        const { data } = await axios.get("/bookings/owner");
+        setBooking(
+          data.filter((booking) => {
+            console.log(booking.place._id, place._id);
+
+            return booking.place._id === place._id;
+          }),
+        );
+      };
+
+      axiosGet();
+    }
+  }, [place]);
+
+  useEffect(() => {
     if (id) {
       const axiosGet = async () => {
         const { data } = await axios.get(`/places/${id}`);
 
-        console.log(data);
         setPlace(data);
       };
 
