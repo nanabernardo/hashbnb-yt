@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import Perk from "../components/Perk";
+import Booking from "../components/Booking";
 
 const Place = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const Place = () => {
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState("");
-  const [booking, setBooking] = useState([]);
+  const [booking, setBooking] = useState(null);
 
   const numberOfDays = (date1, date2) => {
     const date1GMT = date1 + "GMT-03:00";
@@ -35,7 +36,7 @@ const Place = () => {
             console.log(booking.place._id, place._id);
 
             return booking.place._id === place._id;
-          }),
+          })[0],
         );
       };
 
@@ -118,6 +119,9 @@ const Place = () => {
           </div>
         </div>
 
+        {/* Booking */}
+        {booking ? <Booking booking={booking} place={true} /> : ""}
+
         {/* grade de imagens */}
         <div className="relative grid aspect-square gap-4 overflow-hidden rounded-2xl sm:aspect-[3/2] sm:grid-cols-[2fr_1fr] sm:grid-rows-2">
           {place.photos
@@ -156,7 +160,7 @@ const Place = () => {
         </div>
 
         {/* colunas */}
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className={`grid ${booking ? "" : "grid-cols-1 md:grid-cols-2"}`}>
           <div className="order-2 flex flex-col gap-5 p-6 md:order-none">
             <div className="flex flex-col gap-2">
               <p className="text-lg font-bold sm:text-2xl">Descrição</p>
@@ -185,62 +189,65 @@ const Place = () => {
               </div>
             </div>
           </div>
+          {booking ? (
+            ""
+          ) : (
+            <form className="order-1 flex flex-col gap-4 self-center justify-self-center rounded-2xl border border-gray-200 px-4 py-3 sm:px-8 sm:py-4 md:order-none">
+              <p className="text-center text-lg font-bold sm:text-2xl">
+                Preço: R$ {place.price} por noite
+              </p>
 
-          <form className="order-1 flex flex-col gap-4 self-center justify-self-center rounded-2xl border border-gray-200 px-4 py-3 sm:px-8 sm:py-4 md:order-none">
-            <p className="text-center text-lg font-bold sm:text-2xl">
-              Preço: R$ {place.price} por noite
-            </p>
+              {/* Checkin e checkout */}
+              <div className="flex flex-col sm:flex-row">
+                <div className="rounded-tl-2xl rounded-tr-2xl border border-gray-200 px-4 py-2 sm:rounded-tr-none sm:rounded-bl-2xl">
+                  <p className="font-bold">Checkin</p>
+                  <input
+                    className="w-full sm:w-auto"
+                    type="date"
+                    value={checkin}
+                    onChange={(e) => setCheckin(e.target.value)}
+                  />
+                </div>
+                <div className="rounded-br-2xl rounded-bl-2xl border border-t-0 border-gray-200 px-4 py-2 sm:rounded-tr-2xl sm:rounded-bl-none sm:border-t sm:border-l-0">
+                  <p className="font-bold">Checkout</p>
+                  <input
+                    className="w-full sm:w-auto"
+                    type="date"
+                    value={checkout}
+                    onChange={(e) => setCheckout(e.target.value)}
+                  />
+                </div>
+              </div>
 
-            {/* Checkin e checkout */}
-            <div className="flex flex-col sm:flex-row">
-              <div className="rounded-tl-2xl rounded-tr-2xl border border-gray-200 px-4 py-2 sm:rounded-tr-none sm:rounded-bl-2xl">
-                <p className="font-bold">Checkin</p>
+              {/* convidados */}
+              <div className="flex flex-col gap-2 rounded-2xl border border-gray-200 px-4 py-2">
+                <p className="font-bold">N° de convidados</p>
                 <input
-                  className="w-full sm:w-auto"
-                  type="date"
-                  value={checkin}
-                  onChange={(e) => setCheckin(e.target.value)}
+                  className="rounded-2xl border border-gray-200 px-4 py-2"
+                  type="number"
+                  placeholder="2"
+                  value={guests}
+                  onChange={(e) => setGuests(e.target.value)}
                 />
               </div>
-              <div className="rounded-br-2xl rounded-bl-2xl border border-t-0 border-gray-200 px-4 py-2 sm:rounded-tr-2xl sm:rounded-bl-none sm:border-t sm:border-l-0">
-                <p className="font-bold">Checkout</p>
-                <input
-                  className="w-full sm:w-auto"
-                  type="date"
-                  value={checkout}
-                  onChange={(e) => setCheckout(e.target.value)}
-                />
-              </div>
-            </div>
 
-            {/* convidados */}
-            <div className="flex flex-col gap-2 rounded-2xl border border-gray-200 px-4 py-2">
-              <p className="font-bold">N° de convidados</p>
-              <input
-                className="rounded-2xl border border-gray-200 px-4 py-2"
-                type="number"
-                placeholder="2"
-                value={guests}
-                onChange={(e) => setGuests(e.target.value)}
-              />
-            </div>
-
-            {user ? (
-              <button
-                className="w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-black"
-                onClick={handleBooking}
-              >
-                Reservar
-              </button>
-            ) : (
-              <Link
-                to={"/login"}
-                className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-white"
-              >
-                Faça seu login
-              </Link>
-            )}
-          </form>
+              {user ? (
+                <button
+                  className="w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-black"
+                  onClick={handleBooking}
+                >
+                  Reservar
+                </button>
+              ) : (
+                <Link
+                  to={"/login"}
+                  className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 text-center font-bold text-white"
+                >
+                  Faça seu login
+                </Link>
+              )}
+            </form>
+          )}
         </div>
 
         {/* Extras */}
