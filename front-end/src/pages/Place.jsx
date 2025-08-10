@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import Perk from "../components/Perk";
 import Booking from "../components/Booking";
@@ -14,6 +14,7 @@ const Place = () => {
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState("");
   const [booking, setBooking] = useState(null);
+  const [redirect, setRedirect] = useState(false);
 
   const numberOfDays = (date1, date2) => {
     const date1GMT = date1 + "GMT-03:00";
@@ -79,11 +80,14 @@ const Place = () => {
         nights,
       };
       const { data } = await axios.post("/bookings", objBooking);
+      setRedirect(true);
       console.log(data);
     } else {
       alert("Preencha todas as informações antes de fazer a reserva");
     }
   };
+
+  if (redirect) return <Navigate to="/account/bookings" />;
 
   if (!place) return <></>;
 
