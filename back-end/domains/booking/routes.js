@@ -5,14 +5,14 @@ import { JWTVerify } from "../../utils/jwt.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/owner", async (req, res) => {
   connectDb();
 
   try {
     const { _id: id } = await JWTVerify(req);
 
     try {
-      const bookingDocs = await Booking.find({ user: id });
+      const bookingDocs = await Booking.find({ user: id }).populate("place");
 
       res.json(bookingDocs);
     } catch (error) {
