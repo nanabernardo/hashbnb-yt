@@ -3,7 +3,7 @@ import Place from "./model.js";
 import { JWTVerify } from "../../utils/jwt.js";
 import { connectDb } from "../../config/db.js";
 import { __dirname } from "../../server.js";
-import { sendToS3, downloadImage, uploadImage } from "./controller.js";
+import { sendToCloudinary, downloadImage, uploadImage } from "./controller.js";
 
 const router = Router();
 
@@ -141,9 +141,9 @@ router.post("/upload/link", async (req, res) => {
   const { link } = req.body;
 
   try {
-    const { filename, fullPath, mimeType } = await downloadImage(link);
+    const { fullPath } = await downloadImage(link);
 
-    const fileURL = await sendToS3(filename, fullPath, mimeType);
+    const fileURL = await sendToCloudinary(fullPath);
 
     res.json(fileURL);
   } catch (error) {
@@ -155,35 +155,15 @@ router.post("/upload/link", async (req, res) => {
 router.post("/upload", uploadImage().array("files", 10), async (req, res) => {
   const { files } = req;
 
-  const filesPromise = new Promise((resolve, reject) => {
-    const fileURLArray = [];
+  try {
+    const uploadPromises = files.map((file) => sendToCloudinary(file.path));
+    const fileURLArrayResolved = await Promise.all(uploadPromises);
 
-    files.forEach(async (file, index) => {
-      const { filename, path, mimetype } = file;
-
-      try {
-        const fileURL = await sendToS3(filename, path, mimetype);
-
-        fileURLArray.push(fileURL);
-      } catch (error) {
-        console.error("Deu algo errado ao subir para o S3", error);
-        reject(error);
-      }
-    });
-    const idInterval = setInterval(() => {
-      console.log("executou o intervalo!");
-
-      if (files.length === fileURLArray.length) {
-        clearInterval(idInterval);
-        console.log("Limpou o intervalo!");
-        resolve(fileURLArray);
-      }
-    }, 100);
-  });
-
-  const fileURLArrayResolved = await filesPromise;
-
-  res.json(fileURLArrayResolved);
+    res.json(fileURLArrayResolved);
+  } catch (error) {
+    console.error("Deu algo errado ao subir as imagens para o Cloudinary", error);
+    res.status(500).json("Erro no upload das imagens.");
+  }
 });
 
 export default router;

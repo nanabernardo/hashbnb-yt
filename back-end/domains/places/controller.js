@@ -1,12 +1,16 @@
 import "dotenv/config";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import download from "image-downloader";
 import mime from "mime-types";
 import multer from "multer";
 import { __dirname } from "../../server.js";
 
-const { S3_ACCESS_KEY, S3_SECRET_KEY, BUCKET } = process.env;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const getExtension = (path) => {
   const mimeType = mime.lookup(path);
@@ -16,25 +20,12 @@ const getExtension = (path) => {
   return { extension, mimeType };
 };
 
-export const sendToS3 = async (filename, path, mimetype) => {
-  const client = new S3Client({
-    region: "us-east-1",
-    credentials: {
-      accessKeyId: S3_ACCESS_KEY,
-      secretAccessKey: S3_SECRET_KEY,
-    },
-  });
-  const command = new PutObjectCommand({
-    Bucket: BUCKET,
-    Key: filename,
-    Body: fs.readFileSync(path),
-    ContentType: mimetype,
-    ACL: "public-read",
-  });
+export const sendToCloudinary = async (filePath) => {
   try {
-    await client.send(command);
-
-    return `https://${BUCKET}.s3.us-east-1.amazonaws.com/${filename}`;
+    const result = await cloudinary.uploader.upload(filePath, {
+      folder: "hashbnb", // pasta que será criada no Cloudinary (opcional)
+    });
+    return result.secure_url; // URL da imagem no Cloudinary
   } catch (error) {
     throw error;
   }
