@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
 import download from "image-downloader";
 import mime from "mime-types";
 import multer from "multer";
