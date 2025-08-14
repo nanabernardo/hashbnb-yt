@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import router from "./routes/index.js";
 import { fileURLToPath } from "url"; //pega url e converte para um caminho de arquivo
-import { dirname } from "node:path";
+import path, { dirname } from "node:path";
 
 export const app = express();
 
@@ -19,4 +19,10 @@ app.use(
   })
 );
 app.use("/tmp", express.static(__dirname + "/tmp"));
+app.use(express.static(path.join(__dirname, "../front-end/dist")));
 app.use(router);
+
+// ----- Onde parei. Está dando erro e precisa ser resolvido. ------
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../front-end/dist/index.html"));
+// });
