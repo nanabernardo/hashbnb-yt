@@ -17,7 +17,11 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "fs": "^0.0.1-security",
+    "image-downloader": "^4.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mimetypes": "^0.1.1",
     "mongoose": "^8.15.0",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "url": "^0.11.4"
   }
 }
