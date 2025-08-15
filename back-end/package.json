@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch ./index.js"
+    "dev": "node --watch ./index.js",
+    "start": "node ./index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "fs": "^0.0.1-security",
+    "hashbnb-youtube": "file:..",
     "image-downloader": "^4.3.0",
     "jsonwebtoken": "^9.0.2",
     "mimetypes": "^0.1.1",
