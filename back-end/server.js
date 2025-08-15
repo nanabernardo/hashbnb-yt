@@ -20,9 +20,8 @@ app.use(
 );
 app.use("/tmp", express.static(__dirname + "/tmp"));
 app.use(express.static(path.join(__dirname, "../front-end/dist")));
-app.use(router);
+app.use("/api", router);
 
-// ----- Onde parei. Está dando erro e precisa ser resolvido. ------
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../front-end/dist/index.html"));
-// });
+app.get(/(.*)/, (req, res) => {
+  res.sendFile(path.join(__dirname, "../front-end/dist/index.html"));
+});
